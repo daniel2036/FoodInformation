@@ -2,16 +2,18 @@
 //  FoodInformationApp.swift
 //  FoodInformation
 //
-//  Created by Daniel Xu on 8/5/24.
+//  Created by Daniel Xu on 2024/6/12.
 //
 
 import SwiftUI
 
 @main
 struct FoodInformationApp: App {
+    @StateObject var order = Order()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
+                .environmentObject(order)
         }
     }
 }
