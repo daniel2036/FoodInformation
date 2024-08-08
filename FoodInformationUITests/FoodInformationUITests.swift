@@ -8,12 +8,15 @@
 import XCTest
 
 final class FoodInformationUITests: XCTestCase {
-
+    var app: XCUIApplication!
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
+        app = XCUIApplication()
+        app.launch()
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
@@ -22,12 +25,36 @@ final class FoodInformationUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testTabExist() {
+        for tabItemID in ["MenuTab", "DessertTab", "OrderTab"] {
+            let tabItem = app.tabBars.buttons[tabItemID]
+            tabItem.tap()
+        }
+    }
+    
+    func testFirstMenuItem() {
+        let mapleFrenchToastLink = app.buttons["Maple French Toast"]
+        XCTAssert(mapleFrenchToastLink.waitForExistence(timeout: 5.0), "Maple French Toast link not found")
+        mapleFrenchToastLink.tap()
+        XCTAssert(app.staticTexts["Maple French Toast"].exists)
+    }
+    
+    func testFirstDessertItem() {
+        let tabItemID = app.tabBars.buttons["DessertTab"]
+        tabItemID.tap()
+        let DessertItem = app.staticTexts["Apam balik"]
+        XCTAssertTrue(DessertItem.waitForExistence(timeout: 10.0), "'Apam balik' not found")
+        XCTAssert(DessertItem.exists)
+    }
+    
+    func testSearchBarType() {
+        let searchBar = app.searchFields["Search"]
+        XCTAssert(searchBar.exists)
+        searchBar.tap()
+        searchBar.typeText("Maple French Toast")
+        app.buttons["Search"].tap()
+        let stackoPancakes = app.staticTexts["Stack-o-Pancakes"]
+        XCTAssertFalse(stackoPancakes.exists, "Stack-o-Pancakes should not be found")
     }
 
     func testLaunchPerformance() throws {

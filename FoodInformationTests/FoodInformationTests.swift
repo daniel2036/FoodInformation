@@ -19,11 +19,20 @@ final class FoodInformationTests: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+        let string = """
+        {
+            "meals": [
+            {
+                "strMeal": "Apam balik",
+                "strMealThumb": "https://themealdb.com/images/media/meals/adxcbq1619787919.jpg",
+                "idMeal": "53049"
+            }
+            ]
+        }
+        """
+        let data = string.data(using: .utf8)
+        let decodedData = try! DessertViewModel().decodeResponse(data: data!, type: DessertResponse.self)
+        assert(decodedData == DessertResponse(meals: [Dessert(strMeal: "Apam balik", strMealThumb: "https://themealdb.com/images/media/meals/adxcbq1619787919.jpg", idMeal: "53049")]))
     }
 
     func testPerformanceExample() throws {
